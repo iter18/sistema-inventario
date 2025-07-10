@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('organizacion_usuario', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('org_usu_id');
+            $table->unsignedBigInteger('org_usu_org_id');
+            $table->unsignedBigInteger('org_usu_usu_id');
+
+            $table->foreign('org_usu_org_id', 'fk_organizacion_usuario_organizacion')
+                ->references('org_id')
+                ->on('organizacion');
+            $table->foreign('org_usu_usu_id', 'fk_organizacion_usuario_usuario')
+                ->references('id')
+                ->on('users');
             $table->timestamps();
         });
     }

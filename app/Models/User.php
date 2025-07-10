@@ -57,6 +57,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Role::class, 'role_user', 'rusu_usu_id', 'rusu_rol_id');
     }
 
+    public function organizaciones()
+    {
+        return $this->belongsToMany(Organizacion::class, 'organizacion_usuario', 'org_usu_usu_id', 'org_usu_org_id');
+    }
+
     /**
      * Verifica si el usuario tiene un rol específico por nombre.
      */
