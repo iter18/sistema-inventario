@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Organizacion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
@@ -19,6 +20,8 @@ class RolesAndUsersSeeder extends Seeder
         // Crear roles si no existen
         $adminRole = Role::firstOrCreate(['rol_nombre' => 'admin']);
         $userRole = Role::firstOrCreate(['rol_nombre' => 'user']);
+        $organizationUser1 = Organizacion::firstOrCreate(['org_nombre' => 'Kuka Systems Mexico 1']);
+        $organizationUser2 = Organizacion::firstOrCreate(['org_nombre' => 'Kuka Systems Mexico 2']);
 
         // Crear un usuario de prueba con contraseña encriptada
         $adminUser = User::firstOrCreate(
@@ -30,7 +33,10 @@ class RolesAndUsersSeeder extends Seeder
         );
 
         // Asignar rol al usuario
-        $adminUser->roles()->sync([$adminRole->id]); // Usa sync para evitar duplicados
+        $adminUser->roles()->sync([$adminRole->role_id]);
+        $adminUser->organizaciones()->sync([$organizationUser1->org_id, $organizationUser2->org_id]);
+
+        // Usa sync para evitar duplicados
 
     }
 }

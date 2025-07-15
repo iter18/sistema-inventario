@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Role extends Model
 {
 
+    protected $table = 'roles';
+
     use HasFactory;
 
     protected $primaryKey = 'role_id';
@@ -19,6 +21,6 @@ class Role extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'role_user', 'rusu_rol_id', 'rusu_usu_id');
+        return $this->belongsToMany(User::class, 'role_user', 'rusu_rol_id', 'rusu_usu_id', 'role_id', 'id');
     }
 }

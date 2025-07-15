@@ -27,7 +27,7 @@ class AuthServiceImpl implements AuthService
         $password = $credentials['password'] ?? null;
         $orgId = $credentials['organizacion_id'] ?? null;
 
-        // Validate the credentials
+        // Validación de credenciales
         if (empty($email) || empty($password) || empty($orgId)) {
             Log::error('Credenciales incompletas para el usuario');
             return response()->json(['error' => 'Credenciales incompletas'], 400);
@@ -41,9 +41,9 @@ class AuthServiceImpl implements AuthService
             return response()->json(['error' => 'Credenciales inválidas'], 401);
         }
 
-        // Valida que el usuario pertenezca a la organización
+        //cargar relaciones de organizaciones y roles
         $user->load('organizaciones', 'roles');
-
+        // Valida que el usuario pertenezca a la organización
         if ($user->organizaciones->isEmpty()) {
             return response()->json(['error' => 'Usuario no pertenece a ninguna organización'], 401);
         }
