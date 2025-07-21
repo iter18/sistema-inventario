@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Organizacion;
 use App\Services\OrganizacionService;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\OrganizacionRepository;
