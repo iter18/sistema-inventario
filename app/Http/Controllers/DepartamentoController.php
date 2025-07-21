@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\DepartamentoService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Http\Resources\DepartamentoResource;
 
 class DepartamentoController extends Controller
 {
@@ -32,10 +32,8 @@ class DepartamentoController extends Controller
         $departamentos = $this->departamentoService->obtenerPorOrganizacion($organizacionId);
 
 
-        return response()->json([
-            'message' => 'Lista de departamentos obtenida correctamente',
-            'data' => $departamentos
-        ], 200);
+
+        return DepartamentoResource::collection($departamentos);
 
     }
 
