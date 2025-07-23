@@ -20,6 +20,11 @@ class Departamento extends Model
         return $this->belongsTo(Organizacion::class, 'dep_org_id', 'org_id');
     }
 
+    public function empleados()
+    {
+        return $this->hasMany(Empleado::class, 'emp_dep_id', 'dep_id');
+    }
+
     // Si no usas timestamps, descomenta la siguiente línea:
     // public $timestamps = false;
 
