@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Services\EmpleadoService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Http\Resources\EmpleadoResource;
 use App\Http\Requests\StoreEmpleadoRequest;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 
 class EmpleadoController extends Controller
@@ -37,7 +37,7 @@ class EmpleadoController extends Controller
 
             return response()->json([
                 'message' => 'Empleado creado exitosamente',
-                'empleado' => $empleado
+                'empleado' => new EmpleadoResource($empleado)
             ], 201);
         } catch (HttpException $e) {
             return response()->
