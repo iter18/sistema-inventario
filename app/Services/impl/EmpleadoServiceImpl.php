@@ -6,7 +6,7 @@ namespace App\Services\impl;
 use App\Services\EmpleadoService;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\EmpleadoRepository;
-use App\Http\Requests\StoreEmpleadoRequest;
+use App\Http\Resources\EmpleadoResource;
 
 class EmpleadoServiceImpl implements EmpleadoService
 {
@@ -38,5 +38,25 @@ class EmpleadoServiceImpl implements EmpleadoService
             Log::error('Error al crear empleado: ' . $e->getMessage());
             throw new \Exception('Error al crear empleado: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Obtiene una lista de todos los empleados.
+     *
+     * @return array
+     */
+    public function listar($organizacionId,$username,$perPage)
+    {
+        try{
+                Log::info('Obteniendo lista de empleados por parte de usuario:.... '.$username);
+                $idOrganizacion = (int)$organizacionId;
+                $resPorPagina = (int)$perPage;
+                return EmpleadoResource::collection($this->empleadoRepository->listar($idOrganizacion,$resPorPagina));
+
+        }catch(\Exception $e){
+            Log::error('Error al obtenmer lista empleado: ' . $e->getMessage());
+            throw new \Exception('Error al obtenmer lista empleado: ' . $e->getMessage());
+        }
+
     }
 }

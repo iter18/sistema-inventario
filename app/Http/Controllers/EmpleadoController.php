@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Resources\EmpleadoResource;
 use App\Http\Requests\StoreEmpleadoRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Http\Request;
 
 
 class EmpleadoController extends Controller
@@ -46,6 +47,25 @@ class EmpleadoController extends Controller
             Log::error('Error al crear empleado: ' . $e->getMessage());
             return response()->json(['error' => 'Error al crear empleado'], 500);
         }
+    }
+
+    public function listar(Request $request)
+    {
+
+
+        $username = $request->user()->name;
+        // Obtener el ID de la organización desde los claims del JWT
+            /** @var \Tymon\JWTAuth\JWT $jwt */
+        $jwt = auth();
+        $payload = $jwt->payload();
+        $organizacionId = $payload->get('id_organizacion');
+        //Obtener el numero de elementos por pagina, si no se especifica mostrara el valor por defecto
+        $perPage = $request->query('per_page',2);
+
+        $empleados = $this->empleadoService->listar($organizacionId,$username,$perPage);
+
+        //return EmpleadoResource::collection($empleados);
+        return $empleados;
     }
 }
 
