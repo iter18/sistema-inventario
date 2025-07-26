@@ -19,7 +19,8 @@ class EmpleadoResource extends JsonResource
             'nombre' => $this->emp_nombre,
             'noEmpleado' => $this->emp_numero,
             'correo' => $this->emp_correo,
-            'fechaIngreso' => $this->emp_fecha_ingreso
+            'fechaIngreso' => $this->emp_fecha_ingreso,
+            'departamento' => $this->departamento->dep_id
         ] ;
     }
 }
