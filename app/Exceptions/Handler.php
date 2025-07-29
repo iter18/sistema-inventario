@@ -26,24 +26,34 @@ class Handler extends ExceptionHandler
     /**
      * Render una excepción no autenticada (sin JWT por ejemplo).
      */
-    protected function unauthenticated($request, AuthenticationException $exception)
+    /*protected function unauthenticated($request, AuthenticationException $exception)
     {
         return response()->json([
-            'message' => 'No autenticado.',
+            'message' => 'No autenticadoaaa.',
         ], 401);
-    }
+    }*/
 
 
-    public function render($request, Throwable $exception): JsonResponse
+     public function render($request, Throwable $exception)
     {
-         Log::error('Excepción capturada en Handler: ' . get_class($exception) . ' - ' . $exception->getMessage());
-        if ($$exception instanceof \App\Exceptions\RecursoNoEncontradoException || is_subclass_of($exception, \App\Exceptions\RecursoNoEncontradoException::class)) {
-             Log::error('RecursoNoEncontradoException.................: ' . $exception->getMessage());
+       Log::error('Excepción capturada en Handler: ' . get_class($exception) . ' - ' . $exception->getMessage());
+
+        // Manejar RecursoNoEncontradoException
+        if ($exception instanceof RecursoNoEncontradoException) {
+            Log::info('Capturada RecursoNoEncontradoException: ' . $exception->getMessage());
             return response()->json([
                 'error' => 'Recurso no encontrado',
                 'mensaje' => $exception->getMessage()
             ], 404);
         }
+
+        if ($exception instanceof AuthenticationException) {
+            return response()->json([
+                'error' => 'No autenticado',
+                'mensaje' => 'Credenciales inválidas o token expirado'
+            ], 401);
+        }
+
 
         return parent::render($request, $exception);
     }

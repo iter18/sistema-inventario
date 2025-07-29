@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Services\EmpleadoService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Resources\EmpleadoResource;
 use App\Http\Requests\StoreEmpleadoRequest;
+use App\Exceptions\RecursoNoEncontradoException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Illuminate\Http\Request;
 
 
 class EmpleadoController extends Controller
@@ -68,19 +69,25 @@ class EmpleadoController extends Controller
         return $empleados;
     }
 
-    public function actualizar(int $id, StoreEmpleadoRequest $request)
-    {
+public function actualizar(int $id, StoreEmpleadoRequest $request)
+{
+    try {
+        $data = $request->toDatabase();
+        $username = $request->user()->name;
+        $usuarioId = $request->user()->id;
+        $empleado = $this->empleadoService->actualizar($id, $data, $username, $usuarioId);
 
-            $data = $request->toDatabase();
-            $username = $request->user()->name;
-            $usuarioId = $request->user()->id;
-            $empleado = $this->empleadoService->actualizar($id, $data,$username,$usuarioId);
-            return response()->json([
-                'message' => 'Empleado actualizado exitosamente',
-                'empleado' => new EmpleadoResource($empleado)
-            ]);
-
-
+        return response()->json([
+            'message' => 'Empleado actualizado exitosamente',
+            'empleado' => new EmpleadoResource($empleado)
+        ]);
+    } catch (RecursoNoEncontradoException $e) {
+        // Esta excepción será manejada por el Handler
+        throw $e;
+    } catch (\Exception $e) {
+        Log::error('Error al actualizar empleado: ' . $e->getMessage());
+        return response()->json(['error' => 'Error al actualizar empleado'], 500);
     }
+}
 }
 

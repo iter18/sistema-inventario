@@ -28,9 +28,14 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        /*
         $exceptions->render(function (AuthenticationException $e, $request) {
             return response()->json([
-                'message' => 'No autenticado.',
+                'message' => 'No autenticadoqq.',
             ], 401);
+        });*/
+               $exceptions->render(function (\Throwable $e, $request) {
+            $handler = app(\App\Exceptions\Handler::class);
+            return $handler->render($request, $e);
         });
     })->create();
