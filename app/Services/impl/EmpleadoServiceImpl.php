@@ -5,8 +5,10 @@ namespace App\Services\impl;
 
 use App\Services\EmpleadoService;
 use Illuminate\Support\Facades\Log;
-use App\Repositories\EmpleadoRepository;
 use App\Http\Resources\EmpleadoResource;
+use App\Repositories\EmpleadoRepository;
+use App\Exceptions\RecursoNoEncontradoException;
+
 
 class EmpleadoServiceImpl implements EmpleadoService
 {
@@ -59,4 +61,50 @@ class EmpleadoServiceImpl implements EmpleadoService
         }
 
     }
+
+    /**
+     * Actualiza un empleado existente.
+     *
+     * @param int $id
+     * @param array $data
+     * @return \App\Models\Empleado
+     */
+    public function actualizar(int $id, array $data,string $username, $usuarioId)
+    {
+            Log::info('Actualizando empleado por usuario:...'.$username);
+            Log::info('Obteniendo empleado....');
+            $empleado = $this->obtenerPorId($id);
+
+            if (!$empleado) {
+                Log::error('Empleadossss no encontrado');
+                 throw new RecursoNoEncontradoException('Empleadottt no encontrado');
+            }
+            $empleado->emp_nombre = $data['emp_nombre'];
+            $empleado->emp_correo = $data['emp_correo'];
+            $empleado->emp_numero = $data['emp_numero'];
+            $empleado->emp_fecha_ingreso = $data['emp_fecha_ingreso'];
+            $empleado->emp_dep_id = $data['emp_dep_id'];
+            $empleado->emp_id_usu =  (int)$usuarioId;
+
+            return $this->empleadoRepository->actualizar($empleado);
+    }
+
+
+    /**
+     * Obtener un empleado por su ID.
+     *
+     * @param int $id
+     * @return \App\Models\Empleado
+     */
+    public function obtenerPorId(int $id)
+    {
+        return $this->empleadoRepository->obtenerPorId($id);
+    }
+
+    /**
+     * Elimina un empleado por su ID.
+     */
+
+
+
 }

@@ -67,5 +67,20 @@ class EmpleadoController extends Controller
         //return EmpleadoResource::collection($empleados);
         return $empleados;
     }
+
+    public function actualizar(int $id, StoreEmpleadoRequest $request)
+    {
+
+            $data = $request->toDatabase();
+            $username = $request->user()->name;
+            $usuarioId = $request->user()->id;
+            $empleado = $this->empleadoService->actualizar($id, $data,$username,$usuarioId);
+            return response()->json([
+                'message' => 'Empleado actualizado exitosamente',
+                'empleado' => new EmpleadoResource($empleado)
+            ]);
+
+
+    }
 }
 

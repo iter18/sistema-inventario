@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
+use Illuminate\Validation\Rule;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -25,12 +26,15 @@ class StoreEmpleadoRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Obtenemos el ID del empleado desde la ruta. Será null en la creación.
+        $empleadoId = $this->route('id');
+
          return [
             'nombre' => 'required|string|max:200',
-            'numeroEmpleado' => 'required|string|max:100|unique:empleados,emp_numero',
-            'correo' => 'required|string|email|max:150|unique:empleados,emp_correo',
+            'numeroEmpleado' => ['required', 'string', 'max:100', Rule::unique('empleados', 'emp_numero')->ignore($empleadoId, 'emp_id')],
+            'correo' => ['required', 'string', 'email', 'max:150', Rule::unique('empleados', 'emp_correo')->ignore($empleadoId, 'emp_id')],
             'fechaIngreso' => 'required|date_format:Y-m-d',
-            'departamentoId' => 'required|integer|exists:departamento,dep_id',
+            'departamentoId' => ['required', 'integer', Rule::exists('departamento', 'dep_id')],
         ];
     }
 

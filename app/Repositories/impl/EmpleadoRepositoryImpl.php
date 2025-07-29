@@ -38,4 +38,37 @@ class EmpleadoRepositoryImpl implements EmpleadoRepository
         ->orderBy('emp_id', 'desc')
         ->paginate($resPorPagina);
     }
+
+    /**
+     * Actualiza un empleado existente.
+     *
+     * @param int $id
+     * @param array $data
+     * @return \App\Models\Empleado
+     */
+    public function actualizar(Empleado $empleado): Empleado
+    {
+        try {
+            $empleado->save();
+            return $empleado;
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar empleado '. $e->getMessage());
+            throw new \Exception('Error al actualizar empleado: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Obtner un empleado por su ID.
+     *
+     * @param int $id
+     * @return \App\Models\Empleado
+     */
+    public function obtenerPorId(int $id):?Empleado
+    {
+        return $this->model->find($id);
+    }
+
+    /**
+     * Elimina un empleado por su ID.
+     */
 }
