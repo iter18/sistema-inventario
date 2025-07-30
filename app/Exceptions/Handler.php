@@ -54,6 +54,15 @@ class Handler extends ExceptionHandler
             ], 401);
         }
 
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            return response()->json([
+            'error' => 'Ruta no encontrada',
+            'mensaje' => 'La ruta solicitada no existe',
+            'ruta_solicitada' => $request->getRequestUri(),
+            'metodo' => $request->getMethod()
+            ], 404);
+        }
+
 
         return parent::render($request, $exception);
     }
