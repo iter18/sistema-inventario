@@ -36,6 +36,7 @@ interface EmpleadoService
     public function obtenerPorId(int $id);
 
     /**
-     * Elimina un empleado por su ID.
+     * Elimina (lógicamente) un empleado por su ID.
      */
+    public function eliminar(int $id, string $username);
 }

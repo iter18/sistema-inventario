@@ -27,4 +27,9 @@ interface EmpleadoRepository
      */
     public function obtenerPorId(int $id): ?Empleado;
 
+    /**
+     * Elimina (lógicamente) un empleado.
+     */
+    public function eliminar(Empleado $empleado): bool;
+
 }

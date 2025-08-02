@@ -69,25 +69,41 @@ class EmpleadoController extends Controller
         return $empleados;
     }
 
-public function actualizar(int $id, StoreEmpleadoRequest $request)
-{
-    try {
-        $data = $request->toDatabase();
-        $username = $request->user()->name;
-        $usuarioId = $request->user()->id;
-        $empleado = $this->empleadoService->actualizar($id, $data, $username, $usuarioId);
+    public function actualizar(int $id, StoreEmpleadoRequest $request)
+    {
+        try {
+            $data = $request->toDatabase();
+            $username = $request->user()->name;
+            $usuarioId = $request->user()->id;
+            $empleado = $this->empleadoService->actualizar($id, $data, $username, $usuarioId);
 
-        return response()->json([
-            'message' => 'Empleado actualizado exitosamente',
-            'empleado' => new EmpleadoResource($empleado)
-        ]);
-    } catch (RecursoNoEncontradoException $e) {
-        // Esta excepción será manejada por el Handler
-        throw $e;
-    } catch (\Exception $e) {
-        Log::error('Error al actualizar empleado: ' . $e->getMessage());
-        return response()->json(['error' => 'Error al actualizar empleado'], 500);
+            return response()->json([
+                'message' => 'Empleado actualizado exitosamente',
+                'empleado' => new EmpleadoResource($empleado)
+            ]);
+        } catch (RecursoNoEncontradoException $e) {
+            // Esta excepción será manejada por el Handler
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar empleado: ' . $e->getMessage());
+            return response()->json(['error' => 'Error al actualizar empleado'], 500);
+        }
+    }
+
+    public function eliminar(Request $request, int $id)
+    {
+        try {
+            $username = $request->user()->name;
+            $this->empleadoService->eliminar($id, $username);
+
+            // Retorna 204 No Content, que es el estándar para un DELETE exitoso.
+            return response()->noContent();
+        } catch (RecursoNoEncontradoException $e) {
+            // El Exception Handler global convertirá esto en una respuesta 404.
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error("Error al eliminar empleado con ID {$id}: " . $e->getMessage());
+            return response()->json(['error' => 'Ocurrió un error interno al intentar eliminar el empleado.'], 500);
+        }
     }
 }
-}
-

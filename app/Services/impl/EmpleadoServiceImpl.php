@@ -76,7 +76,7 @@ class EmpleadoServiceImpl implements EmpleadoService
             $empleado = $this->obtenerPorId($id);
 
             if (!$empleado) {
-                Log::error('Empleadossss no encontrado');
+                Log::error('Empleado no encontrado');
                  throw new RecursoNoEncontradoException('Empleadottt no encontrado');
             }
             $empleado->emp_nombre = $data['emp_nombre'];
@@ -103,8 +103,19 @@ class EmpleadoServiceImpl implements EmpleadoService
 
     /**
      * Elimina un empleado por su ID.
+     *
+     * @param int $id
+     * @param string $username
+     * @return bool
      */
-
-
-
+    public function eliminar(int $id, string $username)
+    {
+        Log::info("Iniciando eliminación de empleado ID: {$id} por usuario: {$username}");
+        $empleado = $this->obtenerPorId($id);
+        if (!$empleado) {
+            Log::error('Empleado no encontrado');
+            throw new RecursoNoEncontradoException("Empleado no encontrado.");
+        }
+        return $this->empleadoRepository->eliminar($empleado);
+    }
 }

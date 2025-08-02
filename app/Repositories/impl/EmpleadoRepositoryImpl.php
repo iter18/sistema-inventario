@@ -71,4 +71,17 @@ class EmpleadoRepositoryImpl implements EmpleadoRepository
     /**
      * Elimina un empleado por su ID.
      */
+    public function eliminar(Empleado $empleado): bool
+    {
+        try {
+            $empleado->emp_baja = true;
+            $empleado->emp_fecha_baja = now();
+             Log::info("Empleado dado de baja...");
+            return $empleado->save();
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar empleado en el repositorio: ' . $e->getMessage());
+            // Re-lanzamos para que la capa de servicio pueda manejarlo.
+            throw new \Exception('Error al eliminar empleado: ' . $e->getMessage());
+        }
+    }
 }
