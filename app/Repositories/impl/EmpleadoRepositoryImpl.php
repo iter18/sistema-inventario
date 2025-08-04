@@ -30,11 +30,17 @@ class EmpleadoRepositoryImpl implements EmpleadoRepository
         }
     }
 
-    public function listar($organizacionId,$resPorPagina)
+    public function listar(int $organizacionId, int $resPorPagina, ?string $nombreEmpleado, ?int $idDepartamento)
     {
         return $this->model->with('departamento')
         ->where('emp_org_id', $organizacionId)
         ->where('emp_baja', false)
+        ->when($nombreEmpleado, function ($query, $nombreEmpleado) {
+            return $query->where('emp_nombre', 'like', '%' . $nombreEmpleado . '%');
+        })
+        ->when($idDepartamento, function ($query, $idDepartamento) {
+            return $query->where('emp_dep_id', $idDepartamento);
+        })
         ->orderBy('emp_id', 'desc')
         ->paginate($resPorPagina);
     }

@@ -62,8 +62,11 @@ class EmpleadoController extends Controller
         $organizacionId = $payload->get('id_organizacion');
         //Obtener el numero de elementos por pagina, si no se especifica mostrara el valor por defecto
         $perPage = $request->query('per_page',2);
+        //Obtenemos nombre del empleado
+        $nombreEmpleado = $request->query('nombreEmpleado', null);
+        $idDepartamento = $request->query('idDepartamento', null);
 
-        $empleados = $this->empleadoService->listar($organizacionId,$username,$perPage);
+        $empleados = $this->empleadoService->listar($organizacionId,$username,$perPage, $nombreEmpleado, $idDepartamento);
 
         //return EmpleadoResource::collection($empleados);
         return $empleados;

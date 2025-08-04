@@ -47,13 +47,14 @@ class EmpleadoServiceImpl implements EmpleadoService
      *
      * @return array
      */
-    public function listar($organizacionId,$username,$perPage)
+    public function listar($organizacionId,$username,$perPage, $nombreEmpleado, $idDepartamento)
     {
         try{
                 Log::info('Obteniendo lista de empleados por parte de usuario:.... '.$username);
                 $idOrganizacion = (int)$organizacionId;
                 $resPorPagina = (int)$perPage;
-                return EmpleadoResource::collection($this->empleadoRepository->listar($idOrganizacion,$resPorPagina));
+                $departamentoId  = $idDepartamento ? (int)$idDepartamento : null;
+                return EmpleadoResource::collection($this->empleadoRepository->listar($idOrganizacion,$resPorPagina, $nombreEmpleado, $departamentoId));
 
         }catch(\Exception $e){
             Log::error('Error al obtenmer lista empleado: ' . $e->getMessage());

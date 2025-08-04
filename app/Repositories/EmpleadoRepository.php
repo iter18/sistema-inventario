@@ -8,7 +8,7 @@ interface EmpleadoRepository
 {
     public function crear(array $data): Empleado;
 
-    public function listar(int $organizacionId,int $resPorPagina);
+    public function listar(int $organizacionId, int $resPorPagina, ?string $nombreEmpleado, ?int $idDepartamento);
 
     /**
      * Actualiza un empleado existente.

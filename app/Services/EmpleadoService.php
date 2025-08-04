@@ -16,7 +16,7 @@ interface EmpleadoService
      *
      * @return array
      */
-    public function listar($organizacionId,string $username,$perPage);
+    public function listar($organizacionId,string $username,$perPage,$nombreEmpleado, $idDepartamento);
 
     /**
      * Actualiza un empleado existente.
