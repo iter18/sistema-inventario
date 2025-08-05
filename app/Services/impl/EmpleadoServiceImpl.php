@@ -51,6 +51,9 @@ class EmpleadoServiceImpl implements EmpleadoService
     {
         try{
                 Log::info('Obteniendo lista de empleados por parte de usuario:.... '.$username);
+                Log::info('Organizacion ID:.... '.$organizacionId);
+                Log::info('Nombre del empleado:.... '.$nombreEmpleado);
+                Log::info('ID del departamento:.... '.$idDepartamento);
                 $idOrganizacion = (int)$organizacionId;
                 $resPorPagina = (int)$perPage;
                 $departamentoId  = $idDepartamento ? (int)$idDepartamento : null;
