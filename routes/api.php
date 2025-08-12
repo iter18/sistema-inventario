@@ -10,3 +10,6 @@ Route::prefix('auth')->group(base_path('routes/authorizacion.php'));
 Route::prefix('organizaciones')->group(base_path('routes/organizacion.php'));
 Route::prefix('departamentos')->group(base_path('routes/departamento.php'));
 Route::prefix('empleados')->group(base_path('routes/empleado.php'));
+Route::prefix('tiposEquipos')->group(base_path('routes/tipoEquipo.php'));
+Route::prefix('marcas')->group(base_path('routes/marca.php'));
+Route::prefix('equipos')->group(base_path('routes/equipo.php'));
